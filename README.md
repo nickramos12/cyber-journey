@@ -1,10 +1,15 @@
 # My Learning Journey
 
-This repository documents my journey in the world of IT, Networking, and Cybersecurity. 
+This repo tracks my progress in IT, Networking, and Cybersecurity.
 
-## You'll find:
-- HTB Lab Write Ups
-- HTB Academy Notes
-- Concepts I'm studying (curl, FTP, HTTP, Networking Basics)
+## What's Inside
+- HTB Lab write-ups
+- HTB Academy notes
+- Concepts I'm studying (curl, FTP, HTTP, networking basics)
 
-I am updating this as I progress through my journey to acquire knowledge. 
+I'll keep updating this as I learn.
+
+## How I Use AI
+
+AI helps me speed up learning, clarify concepts, and explore topics deeper.  
+I don't use it to bypass skills—just to understand things better and ask better questions.
