@@ -1,5 +1,6 @@
 # Meow
 **Difficulty:** Very Easy
+[View My Completion Certificate](https://labs.hackthebox.com/achievement/machine/2884432/394)
 
 ## Purpose of Lab
 The general purpose of this lab is to become comfortable using the terminal, basic commands, and connecting to target machines securely. This is a guided lab (as are most of the starting point labs).  
