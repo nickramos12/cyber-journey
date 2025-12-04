@@ -1,5 +1,6 @@
 # Meow
 **Difficulty:** Very Easy
+
 [View My Completion Certificate](https://labs.hackthebox.com/achievement/machine/2884432/394)
 
 ## Purpose of Lab
