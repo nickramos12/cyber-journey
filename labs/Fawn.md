@@ -4,45 +4,36 @@
 [View my Completion Certificate](https://labs.hackthebox.com/achievement/machine/2884432/393)
 
 ## Purpose of Lab
-This was a guided lab, but the intended purpose is to familiarize the student with 
+Full disclosure: this was a guided lab. The purpose of this lab was to simulate what an actual lab would feel like(connecting, searching, obtaining the flag). It also familiarized the student with basic commands. 
 
 ## Concepts Covered
-### <Concept 1>
-Short description of what you learned or what the concept helped you do.
+### Startup Protocol
+Having a repeatable startup process matters. This lab followed the same beggining structure as the last - except I had a better idea of what I was doing (and trying to accomplish). I verified the VPN connection, checked that the target machine was reachable with an ICMP, then ran a network scan for basic data: open ports, versions, and operating systems. 
 
 **Key Points**
-- bullet point 1  
-- bullet point 2  
-- bullet point 3  
+- Always verify VPN Connection with `ip a s tunO`
+- Ensure host is reachable with `ping -c 3 <ipv4>`
+- Scan for network data with `nmap -Pn -sV -sC -O <ipv4>`
 
-### <Concept 2>
-Short description.
-
-**Key Points**
-- bullet point 1  
-- bullet point 2  
-- bullet point 3  
-
-### <Concept 3> (optional)
-Short description.
+### Connecting to FTP (tcp/21)
+Understanding how to connect and navigate a port is crucial. After a completing a network scan, I found tcp/21 was open and anonymous login was enabled. I logged in and searched the directory for files, finding the flag fairly quick. 
 
 **Key Points**
-- bullet point 1  
-- bullet point 2  
-- bullet point 3  
+- Connect to tcp/21 with `ftp <ipv4>
+- If anonymous login is enabled, user is `anonymous` and password is blank
+- You can view the root directory by using `ls`
 
 ## Recon Summary
-A quick overview of how you identified the attack path.
+I did a basic network scan, found tcp/21 (ftp) was open and allowed anonymous login.
 
 **Tools Used**
 - `ping`
 - `nmap`
-- etc.
+- `ftp`
 
 **Important Findings**
-- Open ports  
-- Services discovered  
-- Any key information  
+- tcp/21 open 
+- anonymous login enabled
 
 ## Exploitation
-Short explanation of how you got in.
+I utilized anonymous FTP login and downloaded the flag from the available directory.
