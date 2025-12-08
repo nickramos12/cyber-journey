@@ -2,7 +2,7 @@
   
 # Networking Fundamentals
 
-This write up is my personal understanding of the network, and how it functions at it's core. I will use this as a reference point in my future carreer to avoid innaccurate data. As with all write-ups, I will constantly update as I develop deeper understandings of the topic. 
+This write up is my personal understanding of the network, and how it functions at it's core. I will use this as a reference point in my future career to avoid inaccurate data. As with all write-ups, I will constantly update as I develop deeper understandings of the topic. 
 
 For Quick Navigation:
 
@@ -26,7 +26,7 @@ For Quick Navigation:
 
 
 > [!IMPORTANT]
-> The OSI & TCP/IP Model are two sides of the same coin. The OSI Model was (and is) the original detailed description of *how* data moves across the network, while the TCP/IP Model is a simplified version of the OSI.
+> The OSI & TCP/IP Model are two sides of the same coin. I like to view the OSI Model as the *theory* of how the internet works, while the TCP/IP Model is how the internet actually works. 
 
 
 ### The OSI Model In Detail
@@ -35,7 +35,7 @@ The Open Systems Interconnection (or "OSI") Model is a conceptual framework that
 
 #### Layer 1: Physical
 
-
+The physical layer is responsible for moving raw bits across a medium. Raw bits are the physical represenations of binary code: 1s and 0s. Depending on the medium, binary can be represented as light on vs light off (fiber), voltage high or low (copper), or radio wave modulation (WiFi). 
 
 #### Layer 2: Data Link
 
@@ -63,15 +63,25 @@ Within the data link layer, there are three important concepts to cover: network
 > **How Layer-2 Avoids Complexity**
 > Answer here when ready. Test of true knowledge. 
 
-
 #### Layer 3: Network
 
-#### Layer 5/6: Transport & Session Layer
+The network layer is responsible for addressing and routing packets between networks. 
 
-#### Presentation Layer
+#### Layer 4: Transport
 
-#### Application Layer
+The transport layer is responsible for end-to-end delivery, segmentation & reassembly, flow control, error handling. This is where TCP & UDP come into play. 
 
+#### Layer 5: Session Layer
+
+The session layer handles the session between both devices, ensuring they're up, ready, and available. 
+
+#### Layer 6: Presentation Layer
+
+The presentation layer handles data formatting, translation, encryption/decryption, and compression of data. 
+
+#### Layer 7: Application Layer
+
+This is where user facing services exist like HTTP, FTP, SMTP, & DNS. Also handles requests from applications. 
 
 
 
