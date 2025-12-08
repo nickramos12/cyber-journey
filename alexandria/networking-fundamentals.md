@@ -1,4 +1,4 @@
-# Netoworking Fundamentals
+# Networking Fundamentals
 
 This write up is my personal understanding of the network, and how it functions at it's core. You can navigate via the links below:
 
@@ -10,6 +10,7 @@ This write up is my personal understanding of the network, and how it functions 
 
 
 ## OSI Model + TCP/IP Model
+[Back to Top](#networking-fundamentals)
 
 ## IP Addressing & Subnetting
 
