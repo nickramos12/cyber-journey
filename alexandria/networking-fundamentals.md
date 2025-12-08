@@ -2,7 +2,7 @@
 
 This write up is my personal understanding of the network, and how it functions at it's core. You can navigate via the links below:
 
-[OSI Model + TCP/IP Model](## OSI Model + TCP/IP Model)
+[OSI Model + TCP/IP Model](#osi-model--tcpip-model)
 
 ## OSI Model + TCP/IP Model
 
