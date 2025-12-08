@@ -5,17 +5,29 @@
 This write up is my personal understanding of the network, and how it functions at it's core. You can navigate via the links below:
 
 [OSI Model + TCP/IP Model](#osi)
+
 [IP Addressing & Subnetting](#ip)
+
 [ARP + Layer 2 (Switching)](#arp)
+
 [ICMP (Ping, Traceroute, Diagnostics)](#icmp)
+
 [TCP Fundamentals](#tcp)
+
 [UDP Fundamentals](#udp)
+
 [DNS Deep Dive](#dns)
+
 [Dynamic Host Configuration Protocol (DHCP)](#dhcp)
+
 [Network Translation (NAT + PAT)](#network)
+
 [Firewalls](#firewalls)
+
 [VPN Fundamentals](#vpn)
+
 [Essential Network Tools](#tools)
+
 
 <a id="osi">
   
