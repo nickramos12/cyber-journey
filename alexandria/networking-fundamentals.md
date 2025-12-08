@@ -1,5 +1,7 @@
-# Networking Fundamentals
 <a id="title">
+  
+# Networking Fundamentals
+
 This write up is my personal understanding of the network, and how it functions at it's core. You can navigate via the links below:
 
 - [OSI Model + TCP/IP Model](#osi)
@@ -57,9 +59,10 @@ This write up is my personal understanding of the network, and how it functions 
 
 <a id="vpn">
   
-##VPN Fundamentals
+## VPN Fundamentals
 
 <a id="tools">
   
 ## Essential Network Tools
 
+[Back](#title)
