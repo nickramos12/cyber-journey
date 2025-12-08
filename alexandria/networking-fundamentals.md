@@ -84,49 +84,59 @@ The presentation layer handles data formatting, translation, encryption/decrypti
 This is where user facing services exist like HTTP, FTP, SMTP, & DNS. Also handles requests from applications. 
 
 
-
+[Back to Top](#title)
 <a id="ip">
   
 ## IP Addressing & Subnetting
 
+[Back to Top](#title)
 <a id="arp">
   
 ## ARP + Layer 2 (Switching)
 
+[Back to Top](#title)
 <a id="icmp">
   
 ## ICMP (Ping, Traceroute, Diagnostics)
 
+[Back to Top](#title)
 <a id="tcp">
   
 ## TCP Fundamentals
 
+[Back to Top](#title)
 <a id="udp">
   
 ## UDP Fundamentals
 
+[Back to Top](#title)
 <a id="dns">
   
 ## DNS Deep Dive
 
+[Back to Top](#title)
 <a id="dhcp">
   
 ## Dynamic Host Configuration Protocol (DHCP)
 
+[Back to Top](#title)
 <a id="network">
   
 ## Network Translation (NAT + PAT)
 
+[Back to Top](#title)
 <a id="firewalls">
   
 ## Firewalls
 
+[Back to Top](#title)
 <a id="vpn">
   
 ## VPN Fundamentals
 
+[Back to Top](#title)
 <a id="tools">
   
 ## Essential Network Tools
 
-[Back](#title)
+[Back to Top](#title)
