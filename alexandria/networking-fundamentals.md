@@ -16,38 +16,50 @@ This write up is my personal understanding of the network, and how it functions 
 - [Essential Network Tools](#tools)
 
 <a id="osi">
+  
 ## OSI Model + TCP/IP Model
 
 <a id="ip">
+  
 ## IP Addressing & Subnetting
 
 <a id="arp">
+  
 ## ARP + Layer 2 (Switching)
 
 <a id="icmp">
+  
 ## ICMP (Ping, Traceroute, Diagnostics)
 
 <a id="tcp">
+  
 ## TCP Fundamentals
 
 <a id="udp">
+  
 ## UDP Fundamentals
 
 <a id="dns">
+  
 ## DNS Deep Dive
 
 <a id="dhcp">
+  
 ## Dynamic Host Configuration Protocol (DHCP)
 
 <a id="network">
+  
 ## Network Translation (NAT + PAT)
 
 <a id="firewalls">
+  
 ## Firewalls
 
 <a id="vpn">
+  
 ##VPN Fundamentals
 
 <a id="tools">
+  
 ## Essential Network Tools
 
