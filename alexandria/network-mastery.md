@@ -1,6 +1,6 @@
 <a id="title">
   
-# NETWORKING PROFICIENCY 
+# Network Mastery
 
 This write up is my personal understanding of the network, and how it functions at it's core. I will use this as a reference point in my future career to avoid inaccurate data. As with all write-ups, I will constantly update as I develop deeper understandings of the topic. 
 
@@ -8,8 +8,8 @@ Ideally, this document includes everything needed to master the concepts of the 
 
 ### For Quick Navigation:
 
-- [OSI + TCP/IP MODELS](#osi)
-- [IP Addressing & Subnetting](#ip)
+- [OSI + TCP/IP Models](#osi)
+- [Ethernet & Physical Media](#eth)
 - [ARP + Layer 2 (Switching)](#arp)
 - [ICMP (Ping, Traceroute, Diagnostics)](#icmp)
 - [TCP Fundamentals](#tcp)
@@ -122,9 +122,51 @@ PDUs are the names we give to the same application data, upon the addition of th
 
 
 [Back to Top](#title)
-<a id="ip">
+
+<a id="eth">
   
-## IP Addressing & Subnetting
+## Ethernet & Physical Media
+
+### Ethernet Fundamentals
+
+Ethernet is a set of rules that allows devices on the **same local network** to exchange data reliably. In essence, ethernet is the solution to "How do I send data to another device on my local network?" Keyword: **local**
+
+> [!Important]
+> Locality has nothing to do with distance. Even if you ran a wire to the edge of the universe and back, it would still be local.
+Local vs non-local is determined by routing — the point where a device stops using MAC addresses, and starts making IP decisions. 
+
+#### Core Ethernet Responsibilities
+
+**Local Device Identification via MAC Address**
+
+Each NIC (network card) has a MAC address and ethernet uses the MAC to distinguish devices on a local network, ensuring data gets to the correct device. 
+
+**Package Data into Frames**
+
+Ethernet wraps higher-layer data (typically an IP packet) into a frame:
+- Header: contains source *and* destination MAC address
+- Payload: the IP packet (fresh from L4 - original app data wrapped in TCP/UDP headers)
+- Trailer: FCS for error checking
+
+**Deliver the Frame to Next Local Device**
+
+Switches/NICs look at the destination MAC address and accept/reject based on their own. 
+
+- Media Access Coordination: defines how devices share transmission medium (collisions, duplexing)
+- Error Detection: detects corrupted frames by using Framce Check Sequences (FCS)
+
+Ethernet does **not**:
+- route traffic between networks
+- make global path decisions
+- care about apps or IP logic
+
+### Copper Ethernet Media
+
+
+
+### Fiber Optic Media
+
+### Media Selection & Design Decisions
 
 [Back to Top](#title)
 <a id="arp">
