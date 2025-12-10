@@ -9,7 +9,7 @@ Ideally, this document includes everything needed to master the concepts of the 
 ### For Quick Navigation:
 
 - [OSI + TCP/IP Models](#osi)
-- [Ethernet & Physical Media](#eth)
+- [Network Media & Data Flow](#flow)
 - [IP Addressing & Subnetting](#ip)
 - [ICMP (Ping, Traceroute, Diagnostics)](#icmp)
 - [TCP Fundamentals](#tcp)
@@ -109,6 +109,8 @@ The raw application data never changes, it's simply nested within new sets of he
 
 PDUs are the names we give to the same application data, upon the addition of their new headers & trailers. 
 
+<a id="pdu">
+  
 | OSI Layer  | PDU Name | What it means                                             |
 | ---------- | -------- | --------------------------------------------------------- |
 | Layers 7–5 | Data     | Application payload (no transport or network headers yet) |
@@ -123,48 +125,49 @@ PDUs are the names we give to the same application data, upon the addition of th
 
 [Back to Top](#title)
 
-<a id="eth">
+<a id="flow">
   
-## Ethernet & Physical Media
+## Network Media & Data Flow
 
-### Ethernet Fundamentals
+### Local Data Movement (LAN)
 
-**Ethernet** is a set of rules that allows devices on the **same local network** to exchange data reliably. In essence, ethernet is the solution to "How do I send data to another device on my local network?" Ethernet lives across OSI L1 & L2, handling the physical transmission of data via cables, but also assi
+"Local" means devices on the same local network. There are two primary methods of local data transmission: Wi-Fi & Ethernet. It's important to understand that these are more like protocols or methods, and to not confuse them with devices or physical hardware. In simplicity, both of these methods aim to recognize devices by their unique MAC address, and forward the correct frames to said devices. Each method has it's own pros & cons. 
 
-> [!Important]
-> Locality has nothing to do with distance. Even if you ran a wire to the edge of the universe and back, it would still be local.
-Local vs non-local is determined by routing — the boundary where a device stops using MAC addresses, and starts making IP decisions. 
+| Feature | Ethernet | Wi-Fi |
+|------|---------|------|
+| Network role | Local (LAN) | Local (LAN) |
+| OSI layer | Layer 2 (uses Layer 1) | Layer 2 (uses Layer 1) |
+| Transmission medium | Copper or fiber | Radio waves |
+| Wired / wireless | Wired | Wireless |
+| Data unit | Frames | Frames |
+| Device identification | MAC addresses | MAC addresses |
+| Medium type | Dedicated per link | Shared medium |
+| Duplex | Full-duplex | Half-duplex–like behavior |
+| Reliability | Very high | Lower (interference, contention) |
+| Latency | Low and consistent | Higher and variable |
+| Speed consistency | Stable | Variable |
+| Interference | Minimal | Susceptible to interference |
+| Typical use | Desktops, servers, switches | Laptops, phones, IoT |
+| Primary advantage | Stability and performance | Convenience and mobility |
 
-#### Core Ethernet Responsibilities
+In summary, Wi-Fi is wireless, making it more convinient but slower. Ethernet is fast, but requires direct connection, typically leading to cable management and distance-to-gateway issues. Both methods achieve the same result, just in different ways. 
 
-**Local Device Identification via MAC Address**
+### WAN Uplinks
 
-Each NIC (network card) has a MAC address and ethernet uses the MAC to distinguish devices on a local network, ensuring data gets to the correct device. 
+The WAN uplink is how data leaves your local network, using fiber, copper, cellular, or satellite to reach the ISP backbone (the data interstate). Data is sent according to what kind of gateway you have - fiber, copper, cellular, or satelite. All of these mediums have the same goal: get data from LAN to WAN, the WAN Uplink being the access point. 
 
-**Package Data into Frames**
+| WAN Medium | Physical medium | Range | Typical environment | Notes |
+|-----------|----------------|-------|----------------------|-------|
+| Fiber | Light (fiber optic cable) | Long | Apartments, offices, backbone access | Fastest, lowest latency |
+| Cable (Coax) | Electrical RF over copper | Long | Residential homes | Shared bandwidth |
+| DSL | Electrical signals over phone lines | Long | Older residential areas | Slower, legacy |
+| Cellular (LTE/5G) | Long-range radio | Long | Mobile & fixed wireless homes | Uses cell towers |
+| Satellite (Starlink) | Microwave radio | Global | Rural / remote locations | Replaces physical last mile |
 
-Ethernet wraps higher-layer data (typically an IP packet) into a frame:
-- Header: contains source *and* destination MAC address
-- Payload: the IP packet (fresh from L4 - original app data wrapped in TCP/UDP headers)
-- Trailer: FCS for error checking
 
-**Deliver the Frame to Next Local Device**
+### Internet Backbone (The Interstate)
 
-Switches/NICs look at the destination MAC address and accept/reject based on their own. 
-
-- Media Access Coordination: defines how devices share transmission medium (collisions, duplexing)
-- Error Detection: detects corrupted frames by using Framce Check Sequences (FCS)
-
-Ethernet does **not**:
-- route traffic between networks
-- make global path decisions
-- care about apps or IP logic
-
-### Copper Ethernet Media
-
-### Fiber Optic Media
-
-### Media Selection & Design Decisions
+The internet backbone is a collection of high-capacity networks (owned by ISPs) that carry traffic between regions, countries, and major networks (typically fiber optic cables). It's primary function is to move massive amounts of data. Servers are sometimes directly connected to backbone networks in order to remove the uplink step. 
 
 [Back to Top](#title)
 
