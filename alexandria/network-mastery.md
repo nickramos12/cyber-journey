@@ -129,6 +129,8 @@ PDUs are the names we give to the same application data, upon the addition of th
   
 ## Network Media & Data Flow
 
+When data leaves a local network, it flows from LAN → WAN uplink → ISP backbone → destination network, then back down through that network’s WAN uplink → LAN or server.
+
 ### Local Data Movement (LAN)
 
 "Local" means devices on the same local network. There are two primary methods of local data transmission: Wi-Fi & Ethernet. It's important to understand that these are more like protocols or methods, and to not confuse them with devices or physical hardware. In simplicity, both of these methods aim to recognize devices by their unique MAC address, and forward the correct frames to said devices. Each method has it's own pros & cons. 
