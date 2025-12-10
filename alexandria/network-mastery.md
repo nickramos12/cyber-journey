@@ -10,7 +10,7 @@ Ideally, this document includes everything needed to master the concepts of the 
 
 - [OSI + TCP/IP Models](#osi)
 - [Ethernet & Physical Media](#eth)
-- [ARP + Layer 2 (Switching)](#arp)
+- [IP Addressing & Subnetting](#ip)
 - [ICMP (Ping, Traceroute, Diagnostics)](#icmp)
 - [TCP Fundamentals](#tcp)
 - [UDP Fundamentals](#udp)
@@ -129,11 +129,11 @@ PDUs are the names we give to the same application data, upon the addition of th
 
 ### Ethernet Fundamentals
 
-Ethernet is a set of rules that allows devices on the **same local network** to exchange data reliably. In essence, ethernet is the solution to "How do I send data to another device on my local network?" Keyword: **local**
+**Ethernet** is a set of rules that allows devices on the **same local network** to exchange data reliably. In essence, ethernet is the solution to "How do I send data to another device on my local network?" Ethernet lives across OSI L1 & L2, handling the physical transmission of data via cables, but also assi
 
 > [!Important]
 > Locality has nothing to do with distance. Even if you ran a wire to the edge of the universe and back, it would still be local.
-Local vs non-local is determined by routing — the point where a device stops using MAC addresses, and starts making IP decisions. 
+Local vs non-local is determined by routing — the boundary where a device stops using MAC addresses, and starts making IP decisions. 
 
 #### Core Ethernet Responsibilities
 
@@ -162,18 +162,18 @@ Ethernet does **not**:
 
 ### Copper Ethernet Media
 
-
-
 ### Fiber Optic Media
 
 ### Media Selection & Design Decisions
 
 [Back to Top](#title)
-<a id="arp">
+
+<a id="ip">
   
-## ARP + Layer 2 (Switching)
+## IP Addressing & Subnetting
 
 [Back to Top](#title)
+
 <a id="icmp">
   
 ## ICMP (Ping, Traceroute, Diagnostics)
