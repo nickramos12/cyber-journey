@@ -13,8 +13,7 @@ Ideally, this document includes everything needed to master the concepts of the 
 - [IP Addressing & Subnetting](#ip)
 - [Layer 2 – Switching & ARP](#switch)
 - [ICMP (Ping, Traceroute, Diagnostics)](#icmp)
-- [TCP Fundamentals](#tcp)
-- [UDP Fundamentals](#udp)
+- [TCP & UDP Fundamentals](#tcpudp)
 - [DNS Deep Dive](#dns)
 - [Dynamic Host Configuration Protocol (DHCP)](#dhcp)
 - [Network Translation (NAT + PAT)](#network)
@@ -224,14 +223,14 @@ We signal how many bits are reserved for the network by adding a `/#` to the end
 
 `192.168.1.0/24` translates to "The first 24 bits (3 octets) are for the network to identify you correctly, and the remaining are for you: 256 unique combinations"
 
-> [!Important] On every `/24` network, there are indeed 256 possible combinations but `.0` is reserved for your network ID (the root IP address, to which all others are built off), and `.255` is for broadcasting to all devices. This technically means there are only 254 available IP addresses for hosts to connect to on your network. (Don't forget, your router needs one too, so in practice there are really only 253 available combos)
+> [!Important]
+> On every `/24` network, there are indeed 256 possible combinations but `.0` is reserved for your network ID (the root IP address, to which all others are built off), and `.255` is for broadcasting to all devices. This technically means there are only 254 available IP addresses for hosts to connect to on your network. (Don't forget, your router needs one too, so in practice there are really only 253 available combos)
 
 [Back to Top](#title)
 
 <a id="switch">
 
 ## Layer 2 – Switching & ARP
-
 
 
 [Back to Top](#title)
@@ -241,16 +240,13 @@ We signal how many bits are reserved for the network by adding a `/#` to the end
 ## ICMP (Ping, Traceroute, Diagnostics)
 
 [Back to Top](#title)
-<a id="tcp">
+
+<a id="tcpudp">
   
-## TCP Fundamentals
+## TCP & UDP Fundamentals
 
 [Back to Top](#title)
-<a id="udp">
-  
-## UDP Fundamentals
 
-[Back to Top](#title)
 <a id="dns">
   
 ## DNS Deep Dive
