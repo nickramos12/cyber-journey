@@ -1,13 +1,30 @@
 # Welcome to my Learning Journey
 
-This repo tracks my self-education progress in IT, Networking, and Cybersecurity.
+## Topics I'm Pursuing
 
-## What's Inside
-- HTB Lab write-ups
-- HTB Academy notes
-- Concepts I'm studying (curl, FTP, HTTP, networking basics)
+- Networking
+- Linux
+- AWS (deep)
+- IAM
+- VPCs
+- Security groups & NACLs
+- Logging & monitoring
+- Terraform
+- Cloud security principles
+- Containers & Kubernetes security
+- Python automation
+- CI/CD pipelines
+- Threat modeling
 
-I'll keep updating this as I learn.
+## Future Key Projects
+
+- secure AWS environment
+- Terraform blueprints
+- Kubernetes cluster
+- CI/CD pipeline
+- security automation tool
+- threat model
+- logging/detection configs
 
 ## How I Use AI
 
