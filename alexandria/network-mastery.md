@@ -173,56 +173,64 @@ Frames leave LAN via gateway → WAN uplink (fiber/coax/DSL/cellular/satellite) 
 
 <a id="ip">
   
-## IP Addressing & Subnetting
+## IP Addressing & Subnetting (L3 Logical Addressing)
 
-In addition to MAC addresses, every device on the network needs an IP address for proper routing. There are two kinds of Ip Addresses: IPv4 (what we currently use), and IPv6 (what we'll eventually move to). Ideally, sometime in the distant future - the network will fully convert to IPv6 for better built-in security and to combat the incoming IPv4 address shortage. 
+IP (L3) provides scalable, hierarchical addressing for internetworking — unlike flat MAC (L2 local only).
 
-Most devices support both IPv4 as well as IPv6 - but IPv4 is still the fallback King which most devices expect. See the table below for a quick comparison:
+### IPv4 vs IPv6 Overview
+| Aspect              | IPv4                          | IPv6                              |
+|---------------------|-------------------------------|-----------------------------------|
+| Size                | 32-bit                        | 128-bit                           |
+| Total addresses     | ~4.3 billion                  | ~3.4 × 10³⁸                       |
+| Format              | Dotted decimal (192.168.1.10) | Hex colon (2001:db8::1)           |
+| NAT                 | Required for conservation     | Not needed                        |
+| Broadcast           | Yes                           | No (multicast instead)            |
+| Config              | DHCP common                   | SLAAC + DHCPv6                    |
+| Security            | IPsec optional                | IPsec mandatory                   |
 
-| **Topic**             | **IPv4**                     | **IPv6**                           |
-| --------------------- | ---------------------------- | ---------------------------------- |
-| **Address size**      | 32-bit                       | 128-bit                            |
-| **Total addresses**   | ~4.3 billion                 | ~3.4×10³⁸ (basically unlimited)    |
-| **Format**            | Decimal (e.g., 192.168.1.10) | Hexadecimal (e.g., 2001:0db8::1)   |
-| **Subnetting**        | CIDR (/0–/32)                | Prefix length (/0–/128)            |
-| **Broadcast**         | Uses broadcast               | No broadcast (uses multicast)      |
-| **NAT**               | Commonly used                | Not needed (address space is huge) |
-| **Configuration**     | Often DHCP                   | Auto-config (SLAAC) + DHCPv6       |
-| **Security**          | Optional IPsec               | IPsec built into the protocol      |
-| **Header complexity** | Smaller, simpler             | Larger, more efficient routing     |
+Focus: IPv4 (still dominant).
 
-> [!Important]
-> IPv4 addresses are considered 32 bits because each octet translates to binary, meaning each octet becomes 8 binary digits.
-> Example: IPv4 address of "192.168.1.10" translates to "11000000.10101000.00000001.00001010" in binary, which is where we get the "32 bits" from. 
+### IPv4 Structure
+- 32 bits → 4 octets (8 bits each).
+- Example: 192.168.1.10 = binary 11000000.10101000.00000001.00001010
+- Divided into **network portion** (identifies subnet) + **host portion** (identifies device).
 
-### Structure of IPv4 Addressing
+### Public vs Private Addresses
+- **Public**: Globally unique, routable on Internet (assigned by IANA → ISPs).
+- **Private (RFC1918)**: Non-routable on Internet, reusable across networks.
+  - 10.0.0.0/8     (16M addresses)
+  - 172.16.0.0/12  (1M addresses)
+  - 192.168.0.0/16 (65K addresses)
+- Home router gets one public IP (dynamic/static) from ISP.
+- Devices get private IPs from router (DHCP or static).
 
-Every home network has 3 core addressing attritbutes - private IP, public IP, and your subnet. These attributes are fundamental to how data can be routed to the correct network, and device. 
+### Subnetting & CIDR
+CIDR notation `/n` = first n bits are network.
+- Host bits = 32 - n
+- Total addresses = 2^(32-n)
+- Usable hosts = total - 2 (network ID + broadcast)
 
-#### Public IP Addressing
+| CIDR   | Mask            | Total Addresses | Usable Hosts | Example Network       |
+|--------|-----------------|-----------------|--------------|-----------------------|
+| /30    | 255.255.255.252 | 4               | 2            | Point-to-point links  |
+| /24    | 255.255.255.0   | 256             | 254          | Typical home LAN      |
+| /16    | 255.255.0.0     | 65,536          | 65,534       | Large org             |
+| /8     | 255.0.0.0       | ~16M            | ~16M-2       | Legacy Class A        |
 
-Your **Public IP Address** is the IP address used to send data across the WAN, to different networks - this is the IP address the global network uses to identify **your** LAN. 
+**Calculation Example (192.168.1.0/24)**:
+- Network ID: 192.168.1.0   (host bits all 0)
+- Broadcast: 192.168.1.255 (host bits all 1)
+- Usable: 192.168.1.1 – 192.168.1.254
+- Router typically takes .1
 
-When your router goes online, it fires off a request to your ISPs DHCP server, saying "Hey I'm alive and I need a public IP address!" to which the DHCP server responds with an available IP. It's important to note, your public IP is **not** static, it's leased to you on a short term basis, and can dynamically change for a multitude of reasons. Its good practice to always check your public IP (if needed) because there's no guarantee that tomorrow you'll have the same one.
+### Key Behaviors
+- **Local vs Remote Decision**: Host compares destination IP to own subnet (using mask). Same subnet → direct L2 (ARP). Different → send to default gateway (router).
+- **APIPA**: If DHCP fails → auto-assign 169.254.x.x/16 (link-local, non-routable).
 
-#### Private IP Addressing
-
-Your **Private IP Address** is a pre-determuined IPv4 that the manufacturer bakes into your router's firmware, straight from the factory. It's important to note that this IP is not neccessarily permanent, it *can* be changed - it just typically does not (unless you change it yourself). 
-
-Your private IP address is **only** used *inside* of your local network, meaning - the only devices that communicate with *your* private IP, are *your* devices, and each device has it's own IP address. Private IPs do not need to be *globally* unique, they must only be unique with *your* network. 
-
-You may have the same private IP address as your neighbor, and it wouldn't matter if you did - since your devices are not local to theirs - yours (and his) are technically still unique. 
-
-#### Subnet Masks (Subnetting)
-
-Subnetting simply defines how many bits identify the network, versus the hosts. In simple terms, the more bits we dedicate to the network, the less availability we have for hosts - and remember we need a unique IP for each host (device) connected. 
-
-We signal how many bits are reserved for the network by adding a `/#` to the end of the IP address, the most common being `/24` which means there are 256 unique IP combinations. (binary-options^remaining-bits = total unique IP combos)
-
-`192.168.1.0/24` translates to "The first 24 bits (3 octets) are for the network to identify you correctly, and the remaining are for you: 256 unique combinations"
-
-> [!Important]
-> On every `/24` network, there are indeed 256 possible combinations but `.0` is reserved for your network ID (the root IP address, to which all others are built off), and `.255` is for broadcasting to all devices. This technically means there are only 254 available IP addresses for hosts to connect to on your network. (Don't forget, your router needs one too, so in practice there are really only 253 available combos)
+### Routing Table Basics
+Simplest view:
+- Local subnet entry (directly connected).
+- Default route (0.0.0.0/0 → gateway) for everything else.
 
 [Back to Top](#title)
 
