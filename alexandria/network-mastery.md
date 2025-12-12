@@ -26,21 +26,19 @@ Use the "Back to Top" links, found at the bottom of each section (or the top, de
 ---
 
 <a id="osi">
-  
+
 ## OSI + TCP/IP MODELS
 
-**TCP/IP Model** - (Transmission Control Protocol / Internet Protocol) A practical 4-layer model based on the real protocols that actually run the internet. It describes how data is truly sent end-to-end across networks.
+**TCP/IP Model:** Practical 4-layer model reflecting real Internet protocols (e.g., TCP, IP). Describes actual end-to-end data flow.
 
-**OSI Model** - (Open Systems Interconnection) A conceptual 7-layer reference model created to standardize how different networking systems communicate. It’s mainly used for learning, design, and troubleshooting, not as an exact implementation of the internet.
+**OSI Model:** Conceptual 7-layer reference model for standardizing interconnection. Primarily for learning, design, and troubleshooting — not a strict implementation.
 
 > [!Important]
-> OSI & TCP/IP are two sides of the same coin. It's important to understand that the network behavior is concrete, as in - the network behaves, how it behaves. These models are just attempts at describing said behavior in a way that is useful. 
+> Both models describe the same concrete network behavior. Layering exists to manage complexity: isolate responsibilities for independent development, scaling, debugging, and interoperability.
 
 **So what's the purpose of layering?** 
 
 The network is extremely complex, so separating responsibilities and behaviors allows complex communication systems to be built, scaled, changed, and debugged without everything breaking. 
-
-Below is a breakdown of each OSI layer, starting from the creation of application data and working downward toward the physical transmission of said data. Sending data = Layer 7 > Layer 1, Receiving data = Layer 1 > Layer 7
 
 | OSI Model (7 Layers)        | TCP/IP Model (4 Layers)         |
 |----------------------------|----------------------------------|
@@ -52,76 +50,71 @@ Below is a breakdown of each OSI layer, starting from the creation of applicatio
 | 2 – Data Link              | 1 - Network Access               |
 | 1 – Physical               | 1 - Network Access               |
 
-> [!Tip]
-> OSI Layers are numbered, TCP/IP layers are not. They are numbered in the table for clarity of order. 
+### OSI Layer Roles
 
-### OSI Layers Explained
+**Focus:** What problem each solves. **Data flow:** Sending (L7 → L1), Receiving (L1 → L7).
 
-#### Layer 7 – Application: Creates user/application data and defines what service is being used.
+- L7 Application: Generates/consumes user data; defines service/protocol (e.g., HTTP request). Problem solved: Human/machine interaction — what to communicate.
+- L6 Presentation: Formats, encodes, compresses, encrypts data for interoperability/privacy (e.g., JPEG, TLS encryption). Problem solved: Ensure data is readable/secure across systems. Often absorbed by applications/TLS today.
+- L5 Session: Manages dialog lifecycle (establish, maintain, terminate; checkpoints/resync). Problem solved: Coordinate full conversations. Often absorbed by applications (e.g., WebSockets) or Transport (TCP).
+- L4 Transport: Provides end-to-end app delivery; adds ports, optional reliability/ordering/flow control (TCP vs UDP). Problem solved: Multiplex apps; control delivery quality.
+- L3 Network: Logical addressing (IP); path selection across networks (routing). Problem solved: Deliver beyond local network; scalable internetworking.
+- L2 Data Link: Local framing; MAC addressing; basic error detection (FCS); next-hop delivery. Problem solved: Reliable transfer between adjacent devices on same medium.
+- L1 Physical: Bit transmission via signals (electrical/optical/radio). Problem solved: Actual movement over media.
 
-> This is where user-facing software creates and consumes data. Browsers, email clients, APIs, and services live here and define what is being communicated (request, response, message, file). The application decides what it wants to say and to whom, but not how it gets delivered.
+### Encapsulation & Decapsulation
 
-#### Layer 6 – Presentation: Formats, encodes, encrypts, or compresses the data so it can be understood.
+Same payload nests deeper on send; unwraps on receive.
 
-> This layer ensures the data is in a usable format for both sides. It handles things like encoding, encryption, and compression so that data can be correctly interpreted and protected. The goal here is representation and privacy, not delivery.
+#### Sending (Encapsulation):
 
-#### Layer 5 – Session: Manages the logical conversation lifecycle between two endpoints.
+L7: Raw application data.
+L4: Add Transport header (ports, seq/ACK if TCP) → Segment.
+L3: Add IP header (source/dest IP, TTL) → Packet.
+L2: Add MAC header (source/dest MAC) + FCS trailer → Frame.
+L1: Encode as bits/signals.
 
-> The session layer manages the logical conversation between two endpoints. It keeps track of whether a communication session is established, active, or closed, and helps resume or maintain conversations. In modern systems, this logic is often absorbed into the application or transport layer
+#### Receiving (Decapsulation):
 
-#### Layer 4 – Transport: Adds ports and (optionally) reliability so app-to-app delivery can work.
+L1: Receive signals → bits.
+L2: Validate FCS, strip MAC → Packet.
+L3: Process IP, route if needed → Segment.
+L4: Process ports/reliability → Data.
+L7: Deliver to application.
 
-> The transport layer enables end-to-end communication between applications. It adds port numbers and, depending on the protocol, manages reliability, ordering, and flow control. This is where the system decides how carefully data should be delivered, not where it goes or how it physically moves.
+Payload unchanged; headers provide context per layer.
 
-#### Layer 3 – Network: Adds IP addressing and selects a path to the destination network.
+#### Key Header Fields (Essentials)
 
-> This layer handles logical addressing and routing across networks. By adding IP addresses, it allows data to be sent beyond the local network and routed through multiple intermediate networks. Layer 3 decides where the data needs to go, not how it gets there or whether it arrives intact.
-
-#### Layer 2 – Data Link: Handles local delivery using MAC addresses and error detection.
-
-> The data link layer is responsible for local network delivery. It frames data, adds hardware (MAC) addresses, and performs basic error detection so devices on the same network can communicate. It only cares about the next hop, not the final destination.
-
-#### Layer 1 – Physical: Moves bits as electrical, optical, or radio signals.
-
-> This layer physically transmits bits across a medium using electrical signals (copper), light pulses (fiber), or radio waves (Wi-Fi). It defines signaling, timing, and physical characteristics of the connection. This is the only layer where actual movement happens.
-
-### Encapsulation
-
-Encapsulation (sending):
-As data moves down the stack, each layer adds its own header (and sometimes trailer) around the same underlying bits.
-- App creates data (L7)
-- Transport adds TCP/UDP header (L4)
-- Network adds IP header (L3)
-- Data Link adds MAC header + FCS (L2)
-- Physical encodes bits as signals (L1)
-
-Decapsulation (receiving):
-As data moves up the stack, each layer removes and processes its own header.
-- Physical receives signals (L1)
-- Data Link validates frame, strips MAC/FCS (L2)
-- Network strips IP header (L3)
-- Transport strips TCP/UDP header (L4)
-- App receives original data (L7)
-
-The raw application data never changes, it's simply nested within new sets of headers/trailers at each stage, and upon receiving they are sequentially removed. 
-
-### Protocol Data Units (PDUs)
-
-PDUs are the names we give to the same application data, upon the addition of their new headers & trailers. 
+Transport (L4): Source/dest ports (multiplex applications).
+Network (L3): Source/dest IP, TTL (prevents loops).
+Data Link (L2): Source/dest MAC, EtherType (identifies payload protocol), FCS (error detection trailer).
 
 <a id="pdu">
   
-| OSI Layer  | PDU Name | What it means                                             |
-| ---------- | -------- | --------------------------------------------------------- |
-| Layers 7–5 | Data     | Application payload (no transport or network headers yet) |
-| Layer 4    | Segment  | Data + TCP or UDP header                                  |
-| Layer 3    | Packet   | Segment + IP header                                       |
-| Layer 2    | Frame    | Packet + MAC header + FCS                                 |
-| Layer 1    | Bits     | Frame encoded as electrical, optical, or radio signals    |
+### Protocol Data Units (PDUs)
 
-> [!Tip]
-> Key Point: The data **never** changes its actual identity, the headers/trailers simply add/remove context to ensure it arrives correctly. 
+PDUs name the data unit at each layer as headers are added/removed.
 
+| Layer    | PDU Name | Contents Added                          |
+|----------|----------|-----------------------------------------|
+| 7–5      | Data     | Raw application payload                 |
+| 4        | Segment  | Data + Transport header (ports, etc.)   |
+| 3        | Packet   | Segment + IP header (IPs, TTL)          |
+| 2        | Frame    | Packet + MAC header + FCS               |
+| 1        | Bits     | Frame encoded as signals                |
+
+### Troubleshooting Tie-In
+
+| Layer | Common Protocols/Examples | Tools/Examples                  |
+|-------|---------------------------|---------------------------------|
+| 7     | HTTP, SMTP                | Browser, curl                   |
+| 6     | TLS encryption            | -                               |
+| 5     | RPC                       | -                               |
+| 4     | TCP, UDP                  | netstat/ss (connections/ports)  |
+| 3     | IP, ICMP                  | ping, traceroute                |
+| 2     | Ethernet                  | arp, switch MAC table           |
+| 1     | -                         | Cable tester, signal analyzer   |
 
 [Back to Top](#title)
 
