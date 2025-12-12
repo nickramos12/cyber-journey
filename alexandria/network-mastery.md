@@ -232,6 +232,31 @@ We signal how many bits are reserved for the network by adding a `/#` to the end
 
 ## Layer 2 – Switching & ARP
 
+Layer 2 handles the forwarding of frames on a local network. There are two mediums (along with two devices) that assist in forwarding frames to their destination. 
+
+Host A (sender) > Wireless AP/Switch > Host B (receiver)
+
+See below for a quick comparison:
+
+| Aspect             | Ethernet Switch Port                  | Wireless Access Point (AP)                 |
+| ------------------ | ------------------------------------- | ------------------------------------------ |
+| Medium             | Wired (copper/fiber)                  | Wireless (radio)                           |
+| Connectivity       | One device per port                   | Multiple devices share the medium          |
+| Frame Transmission | Sent directly out a specific port     | Broadcast over the air to all clients      |
+| Frame Reception    | Only the connected device receives it | All clients hear it; only one processes it |
+| MAC Learning       | Learns MAC → port                     | Learns MAC → radio interface               |
+| Forwarding Basis   | MAC address table                     | MAC address table                          |
+| Collision Handling | None (full-duplex)                    | Required (shared medium)                   |
+| Duplex             | Full-duplex                           | Half-duplex                                |
+| Core Role          | Deterministic frame forwarding        | Shared-medium frame distribution           |
+
+> [!Important]
+> Remember: Duplexing is about whether data can be sent/received at the same time, or not.
+> Half-duplex = send OR receive, not both. Full-duplex = send and receive simultaneously. This ties into the earlier context on why Ethernet is typically always faster that Wi-fi.
+
+
+
+
 
 [Back to Top](#title)
 
