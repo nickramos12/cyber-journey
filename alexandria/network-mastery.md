@@ -9,7 +9,7 @@ Ideally, this document includes everything needed to master the concepts of the 
 ### For Quick Navigation:
 
 - [OSI + TCP/IP Models](#osi)
-- [Network Media & Data Flow](#flow)
+- [Network Media & Data Flow](#ethernet)
 - [IP Addressing & Subnetting](#ip)
 - [Layer 2 – Switching & ARP](#switch)
 - [ICMP (Ping, Traceroute, Diagnostics)](#icmp)
@@ -118,51 +118,56 @@ PDUs name the data unit at each layer as headers are added/removed.
 
 [Back to Top](#title)
 
-<a id="flow">
+<a id="ethernet">
   
-## Network Media & Data Flow
+## Physical Media & Ethernet (L1 + L2 Local Delivery)
 
-When data leaves a local network, it flows from LAN → WAN uplink → ISP backbone → destination network, then back down through that network’s WAN uplink → LAN or server.
+Local (LAN) delivery happens at L1 (physical signals) and L2 (framing/MAC). All local methods use Ethernet-style frames; differences are in physical medium and access control.
 
-### Local Data Movement (LAN)
+### Ethernet Frame Basics
+- Unit: Frame (L2 PDU).
+- Key fields: Dest/src MAC (48-bit hardware address), EtherType (payload type, e.g., 0x0800 = IPv4), payload, FCS (error check).
+- Purpose: Deliver frames to next hop on same network using MAC.
 
-"Local" means devices on the same local network. There are two primary methods of local data transmission: Wi-Fi & Ethernet. It's important to understand that these are more like protocols or methods, and to not confuse them with devices or physical hardware. In simplicity, both of these methods aim to recognize devices by their unique MAC address, and forward the correct frames to said devices. Each method has it's own pros & cons. 
+### MAC Addresses
+- 48-bit (6 bytes), globally unique.
+- First 3 bytes: OUI (vendor), last 3: device-specific.
+- Local scope only — changes at each router hop.
 
-| Feature | Ethernet | Wi-Fi |
-|------|---------|------|
-| Network role | Local (LAN) | Local (LAN) |
-| OSI layer | Layer 2 (uses Layer 1) | Layer 2 (uses Layer 1) |
-| Transmission medium | Copper or fiber | Radio waves |
-| Wired / wireless | Wired | Wireless |
-| Data unit | Frames | Frames |
-| Device identification | MAC addresses | MAC addresses |
-| Medium type | Dedicated per link | Shared medium |
-| Duplex | Full-duplex | Half-duplex–like behavior |
-| Reliability | Very high | Lower (interference, contention) |
-| Latency | Low and consistent | Higher and variable |
-| Speed consistency | Stable | Variable |
-| Interference | Minimal | Susceptible to interference |
-| Typical use | Desktops, servers, switches | Laptops, phones, IoT |
-| Primary advantage | Stability and performance | Convenience and mobility |
+### Wired Ethernet (Copper/Fiber)
+Dedicated medium → no contention.
 
-In summary, Wi-Fi is wireless, making it more convinient but slower. Ethernet is fast, but requires direct connection, typically leading to cable management and distance-to-gateway issues. Both methods achieve the same result, just in different ways. 
+| Medium | Categories/Types | Max Speed | Max Distance | Use Case |
+|--------|------------------|-----------|--------------|----------|
+| Copper | Cat5e | 1 Gbps | 100m | Desktops |
+| Copper | Cat6/6a | 10 Gbps | 100m/55m | Data centers |
+| Copper | Cat8 | 40 Gbps | 30m | High-speed |
+| Fiber (MMF) | OM3/OM4/OM5 | 10–100 Gbps | 300–550m | Campus/building |
+| Fiber (SMF) | OS1/OS2 | 10–400 Gbps | 10–80km | Long-haul |
 
-### WAN Uplinks
+- Duplex: Full (simultaneous send/receive).
+- Access: None needed (switched = point-to-point).
+- Connectors: RJ-45 (copper), LC/SC (fiber).
 
-The WAN uplink is how data leaves your local network, using fiber, copper, cellular, or satellite to reach the ISP backbone (the data interstate). Data is sent according to what kind of gateway you have - fiber, copper, cellular, or satelite. All of these mediums have the same goal: get data from LAN to WAN, the WAN Uplink being the access point. 
+### Wireless (Wi-Fi — 802.11)
+Shared radio medium → contention.
 
-| WAN Medium | Physical medium | Range | Typical environment | Notes |
-|-----------|----------------|-------|----------------------|-------|
-| Fiber | Light (fiber optic cable) | Long | Apartments, offices, backbone access | Fastest, lowest latency |
-| Cable (Coax) | Electrical RF over copper | Long | Residential homes | Shared bandwidth |
-| DSL | Electrical signals over phone lines | Long | Older residential areas | Slower, legacy |
-| Cellular (LTE/5G) | Long-range radio | Long | Mobile & fixed wireless homes | Uses cell towers |
-| Satellite (Starlink) | Microwave radio | Global | Rural / remote locations | Replaces physical last mile |
+- Standards: a/b/g/n/ac/ax/be (progressive speed/MIMO/channel improvements).
+- Bands: 2.4 GHz (range, crowded), 5/6 GHz (speed, less range).
+- Access: CSMA/CA (listen before talk, backoff on collision).
+- Duplex: Full-duplex capable (MIMO), but contention reduces effective throughput.
+- Challenges: Interference, distance, obstacles → variable latency/speed.
 
+| Aspect | Wired Ethernet | Wi-Fi |
+|--------|----------------|-------|
+| Medium | Dedicated | Shared radio |
+| Duplex | Full | Full capable (contention-limited) |
+| Reliability | Near 100% | Interference-sensitive |
+| Speed (real-world) | Consistent | Variable (up to multi-Gbps today) |
+| Advantage | Performance/stability | Mobility |
 
-### Internet Backbone (The Interstate)
-
-The internet backbone is a collection of high-capacity networks (owned by ISPs) that carry traffic between regions, countries, and major networks (typically fiber optic cables). It's primary function is to move massive amounts of data. Servers are sometimes directly connected to backbone networks in order to remove the uplink step. 
+### Beyond LAN (Brief)
+Frames leave LAN via gateway → WAN uplink (fiber/coax/DSL/cellular/satellite) → ISP → backbone (Tier 1 fiber networks). L2 headers change at gateway; IP (L3) remains.
 
 [Back to Top](#title)
 
