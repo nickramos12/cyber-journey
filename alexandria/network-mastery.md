@@ -236,33 +236,68 @@ Simplest view:
 
 <a id="switch">
 
-## Layer 2 – Switching & ARP
+## Layer 2 – Switching & ARP (Local Frame Delivery)
 
-Layer 2 handles the forwarding of frames on a local network. There are two mediums (along with two devices) that assist in forwarding frames to their destination. 
+L2 (Data Link) delivers frames within the same broadcast domain using MAC addresses. Frames do not cross routers — MAC is local only.
 
-Host A (sender) > Wireless AP/Switch > Host B (receiver)
+### Ethernet Frame Structure (Recap)
+- Dest MAC (6 bytes)
+- Src MAC (6 bytes)
+- EtherType (e.g., 0x0800 = IPv4)
+- Payload (packet)
+- FCS (trailer for error detection)
 
-See below for a quick comparison:
+### MAC Addresses
+- 48-bit (hex, e.g., 00:1A:2B:3C:4D:5E)
+- First 24 bits: OUI (vendor)
+- Globally unique (burned-in)
+- Scope: Local network only (rewritten at each hop by routers)
 
-| Aspect             | Ethernet Switch Port                  | Wireless Access Point (AP)                 |
-| ------------------ | ------------------------------------- | ------------------------------------------ |
-| Medium             | Wired (copper/fiber)                  | Wireless (radio)                           |
-| Connectivity       | One device per port                   | Multiple devices share the medium          |
-| Frame Transmission | Sent directly out a specific port     | Broadcast over the air to all clients      |
-| Frame Reception    | Only the connected device receives it | All clients hear it; only one processes it |
-| MAC Learning       | Learns MAC → port                     | Learns MAC → radio interface               |
-| Forwarding Basis   | MAC address table                     | MAC address table                          |
-| Collision Handling | None (full-duplex)                    | Required (shared medium)                   |
-| Duplex             | Full-duplex                           | Half-duplex                                |
-| Core Role          | Deterministic frame forwarding        | Shared-medium frame distribution           |
+### ARP (Address Resolution Protocol)
+Purpose: Map IP → MAC for local delivery.
 
-> [!Important]
-> Remember: Duplexing is about whether data can be sent/received at the same time, or not.
-> Half-duplex = send OR receive, not both. Full-duplex = send and receive simultaneously. This ties into the earlier context on why Ethernet is typically always faster that Wi-fi.
+Process:
+1. Host A wants to send to IP 192.168.1.10 (same subnet).
+2. Checks ARP cache.
+3. If miss: Broadcast ARP Request ("Who has 192.168.1.10? Tell 192.168.1.5")
+4. Target replies unicast ARP Reply (MAC of target)
+5. Cache entry added (IP → MAC), timeout ~minutes-hours
 
+- Gratuitous ARP: Host broadcasts own IP/MAC (e.g., detect duplicate IP, announce MAC change)
 
+### Switching Mechanics
+Switches forward frames intelligently using MAC address table (CAM table).
 
+Learning:
+- Incoming frame on port → record src MAC → port
 
+Forwarding:
+- Known unicast dest MAC → forward only to learned port
+- Unknown unicast → flood to all ports except ingress
+- Broadcast/multicast → flood
+
+| Frame Type     | Delivery Behavior          |
+|----------------|----------------------------|
+| Unicast (known)   | Single port                |
+| Unicast (unknown) | Flood                      |
+| Broadcast      | Flood                      |
+| Multicast      | Flood (or IGMP snooping)   |
+
+### Wired Switch vs Wireless AP (L2 Forwarding Comparison)
+Both build/maintain MAC tables, but medium differences:
+
+| Aspect                | Wired Switch                          | Wireless AP                              |
+|-----------------------|---------------------------------------|------------------------------------------|
+| Medium                | Dedicated copper/fiber                | Shared radio                             |
+| Connectivity          | One device per port                   | Many devices share channel               |
+| Frame Transmission    | Direct to specific port               | Broadcast over air                       |
+| Reception             | Only connected device                 | All clients hear; target processes       |
+| Collision Handling    | None (full-duplex)                    | CSMA/CA (contention avoidance)           |
+| Duplex                | Full                                  | Effectively half-duplex (shared medium)  |
+| Forwarding            | Deterministic                         | Probabilistic (interference possible)    |
+
+### Key Security Note
+ARP is trust-based (no authentication) → vulnerable to spoofing (attacker replies with fake MAC).
 
 [Back to Top](#title)
 
