@@ -302,8 +302,79 @@ ARP is trust-based (no authentication) → vulnerable to spoofing (attacker repl
 [Back to Top](#title)
 
 <a id="icmp">
-  
-## ICMP (Ping, Traceroute, Diagnostics)
+
+## ICMP & Diagnostics (L3 Reachability & Path Tools)
+
+ICMP (Internet Control Message Protocol) runs inside IP packets (protocol 1). Purpose: Error reporting, control messages, and diagnostics — not for application data.
+
+Key role: Provides feedback on IP delivery (reachability, errors, path).
+
+### TTL (Time to Live)
+- 8-bit field in every IP header.
+- Starts high (e.g., 64, 128, 255).
+- Decremented by 1 at each router.
+- Hits 0 → router discards packet + sends ICMP Time Exceeded back to source.
+- Prevents infinite loops.
+
+### Ping (Echo Request/Reply)
+- Tests reachability and round-trip time (RTT).
+- Sends ICMP Type 8 (Echo Request).
+- Expects Type 0 (Echo Reply).
+- Command: `ping -c 3 <target>` (limit to 3 packets).
+
+Typical output breakdown:
+- **64 bytes from <IP>**: Payload + headers received.
+- **icmp_seq=N**: Sequence number (tracks order/loss).
+- **ttl=N**: Remaining TTL on reply (estimate hops: original - remaining).
+- **time=X ms**: RTT for that packet.
+- Summary: Transmitted/received, loss %, RTT min/avg/max/mdev.
+
+| Outcome          | Meaning                                      |
+|------------------|----------------------------------------------|
+| Replies          | Host reachable, ICMP allowed                 |
+| Timeout          | Blocked, down, or path issue                 |
+| High variance    | Unstable path (jitter)                       |
+
+### Traceroute (Path Discovery)
+- Reveals hop-by-hop routers and latency.
+- Uses TTL manipulation:
+  - TTL=1 → first router replies Time Exceeded.
+  - Increment TTL → next router, etc.
+- Linux: UDP probes → final "port unreachable".
+- Windows (tracert): ICMP Echo probes.
+- Command: `traceroute -q 1 -w 2 <target>` (quiet/fast).
+
+Typical output:
+- Hop number + IP/hostname + latency.
+- `* * *`: No Time Exceeded reply (common — routers block for security).
+- Path works even with * (connectivity exists, just hidden).
+
+| Tool Variant     | Probe Type       | Common Flags                          |
+|------------------|------------------|---------------------------------------|
+| Linux traceroute | UDP high ports   | -q 1 (1 probe/hop), -w 2 (2s timeout) |
+| Windows tracert  | ICMP Echo        | N/A                                   |
+
+### Common ICMP Types
+| Type | Name                  | Purpose/Example                              |
+|------|-----------------------|----------------------------------------------|
+| 0    | Echo Reply            | Ping response                                |
+| 8    | Echo Request          | Ping probe                                   |
+| 3    | Destination Unreachable | Net/host/port unreachable (e.g., service down) |
+| 11   | Time Exceeded         | TTL=0 (traceroute hop reply)                 |
+
+### Real-World Diagnostic Workflow
+1. Ping hostname → check DNS + reachability.
+2. Ping direct IP → bypass DNS.
+3. Traceroute → path and per-hop issues.
+4. Interpret *: Blocking ≠ broken.
+
+### IPv4 vs IPv6 Notes
+- Modern systems prefer IPv6 (Happy Eyeballs).
+- Force IPv4: `ping -4`, `traceroute -4`.
+- Paths may differ slightly.
+
+[Back to Top](#title)
+
 
 [Back to Top](#title)
 
